@@ -1,5 +1,5 @@
 /**
- * main.ts：NestJS 入口；启动校验 JWT_SECRET；挂 APP_GUARD 全局生效。
+ * main.ts：NestJS 入口；启动校验 JWT_SECRET；挂 APP_GUARD 全局生效；CORS 由 WEB_ORIGIN 控制。
  *
  * 注：JWT_SECRET fail-fast 由 AppModule 的 JwtConfig provider 处理（见 app.module.ts）。
  */
@@ -7,9 +7,11 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { buildCorsOptions } from './cors.config';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
+  app.enableCors(buildCorsOptions());
   await app.listen(Number(process.env.PORT) || 3000);
 }
 
