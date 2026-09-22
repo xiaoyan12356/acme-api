@@ -60,8 +60,8 @@ describe('AuthService.login', () => {
     expect(typeof decoded.exp).toBe('number');
     expect(typeof out.expiresAt).toBe('string');
     expect(out.expiresAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
-    // exp 与 expiresAt 数值一致
-    expect(new Date(out.expiresAt).getTime() / 1000).toBe(decoded.exp);
+    // exp 与 expiresAt 数值一致（Math.floor 规避亚秒精度差异）
+    expect(Math.floor(new Date(out.expiresAt).getTime() / 1000)).toBe(decoded.exp);
   });
 
   // UT-AUTH-002
